@@ -25,18 +25,53 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#------------------------------------------ GET ALL MEMBERS ------------------#
 @app.route('/members', methods=['GET'])
 def handle_hello():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
+    response_body = [{
+        # "hello": "world",
+        "family": members
+    }]
+
+
+    return jsonify(response_body, content_type: application/json), 200
+#------------------------------------------ POST A MEMBER ------------------#
+@app.route('/member', methods=['POST'])
+def create_member():
+    # member = jackson_family.add_member()
+    # if member:
+    #     new_member = jackson_family.add_member(member)
+    # return jsonify(new_member._members), 200
+    member = jackson_family.add_member()
     response_body = {
-        "hello": "world",
+        # "hello": "world",
         "family": members
     }
 
 
     return jsonify(response_body), 200
+
+#------------------------------------------ GET A MEMBER ID ------------------#
+@app.route('/member/<int:id>', methods=['GET'])
+def get_member_id(id):
+    member=jackson_family.get_member(id)
+    if member == id:
+        response_body = {
+            "id": member,
+        }
+        return jsonify(response_body), 200
+    else: 
+        return jsonify({'error': 'Not found'}), 404
+
+#------------------------------------------ DELETE A MEMBER ID ------------------#
+@app.route('/member/<int:id>', methods=['DELETE'])
+def delete_member_id(id):
+    deleted_member = jackson_family.delete_member(id)
+    if deleted_member:
+        return jsonify({"Deleted": True}), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
