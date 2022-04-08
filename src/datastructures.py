@@ -54,8 +54,11 @@ class FamilyStructure:
 
     def get_member(self, id):
         # fill this method and update the return
-        pass
-
+       for member in self._members:
+            if member["id"]==int(id):
+                return member
+            else:
+                return "400 no se encuentra"
     # this method is done, it returns a list with all the family members
     def get_all_members(self):
         return self._members
