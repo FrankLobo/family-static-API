@@ -31,41 +31,32 @@ def handle_hello():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
-    response_body = {
-        # "hello": "world",
-        "family": members
-    }
-
-    return jsonify(response_body), 200
+    return jsonify(members), 200
+    
 #---------------------------------------------------- POST A MEMBER -------------------------------#
 @app.route('/member', methods=['POST'])
 def create_member():
-
-    member = jackson_family.add_member()
-    if member:
-        new_member = jackson_family.add_member(member)
-    return jsonify(new_member._members), 200
-
+    adding_member = jackson_family.add_member({})
+    return jsonify(adding_member), 200
 #---------------------------------------------------- GET A MEMBER BY ID --------------------------#
-@app.route('/member/<int:id>', methods=['GET'])
-def get_member_id(id):
+@app.route('/member/<int:member_id>', methods=['GET'])
+def get_member_id(member_id):
+    # member = jackson_family.get_member(member_id)
+    # return jsonify({}) , 200
+    member = jackson_family.get_member(member_id)
+    response_body = {
+        "id": member,
+        "first_name": member,
+    }
 
-    member=jackson_family.get_member(id)
-    if member == id:
-        response_body = {
-            "id": member,
-        }
-        return jsonify(response_body), 200
-    else: 
-        return jsonify({'error': 'Not found'}), 404
+    return jsonify(response_body), 200
 
 #------------------------------------------ DELETE A MEMBER BY ID ------------------#
-@app.route('/member/<int:id>', methods=['DELETE'])
-def delete_member_id(id):
-
-    deleted_member = jackson_family.delete_member(id)
-    if deleted_member:
-        return jsonify({"Deleted": True}), 200
+@app.route('/member/<int:member_id>', methods=['DELETE'])
+def delete_member_id(member_id):
+    jackson_family.get_member(member_id)
+    deleted_member = jackson_family.get_all_members()
+    return jsonify(deleted_member), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
